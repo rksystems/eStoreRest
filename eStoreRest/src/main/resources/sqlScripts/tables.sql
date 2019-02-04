@@ -6,6 +6,17 @@ CREATE TABLE `estore`.`store` (
   `storeLogoPath` VARCHAR(45) NULL,
   PRIMARY KEY (`storeId`));
 
+drop table `estore`.`users`;
+
+CREATE TABLE `users` (
+  `userId` int(11) NOT NULL,
+  `userName` varchar(45) DEFAULT NULL,
+  `password` varchar(500) DEFAULT NULL,
+  `active` varchar(1) NOT NULL DEFAULT 'Y',
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `userName_UNIQUE` (`userName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 drop table address;
 
 CREATE TABLE `estore`.`address` (
@@ -31,11 +42,21 @@ CREATE TABLE `estore`.`address` (
   `mobilePhoneNo1` VARCHAR(15) NULL,
   `mobilePhoneNo2` VARCHAR(15) NULL,
   `taxCode` VARCHAR(10) NULL,
-  `memberId` INT NULL,
+  `storeIdFK` INT NULL,
+  `userIdFK` INT NULL,
   PRIMARY KEY (`addressId`),
-  INDEX `AddrStoreFK_idx` (`memberId` ASC) VISIBLE,
+  INDEX `AddrStoreFK_idx` (`storeIdFK` ASC) VISIBLE,
   CONSTRAINT `AddrStoreFK`
-    FOREIGN KEY (`memberId`)
+    FOREIGN KEY (`storeIdFK`)
     REFERENCES `estore`.`store` (`storeId`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+	INDEX `AddrUserFK_idx` (`userIdFK` ASC) VISIBLE,
+  CONSTRAINT `AddrUserFK`
+    FOREIGN KEY (`userIdFK`)
+    REFERENCES `estore`.`users` (`userId`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+    
+    
+

@@ -13,20 +13,20 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ss.estore.model.Store;
+import com.ss.estore.model.User;
 
 /**
  * @author Raghu Kishore
  *
  */
 @Component
-public class StoreDAOImpl implements StoreDAO {
+public class UserDAOImpl implements UserDAO {
 	private SessionFactory sessionFactory;
 
 	/*public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}*/
-
+	
 	@Autowired
 	public void setSessionFactory(EntityManagerFactory factory) {
 		if (factory.unwrap(SessionFactory.class) == null) {
@@ -36,36 +36,37 @@ public class StoreDAOImpl implements StoreDAO {
 	}
 
 	@Override
-	public void save(Store store) {
+	public void save(User user) {
 		Session session = this.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(store);
+		session.save(user);
 		tx.commit();
 		session.close();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Store> list() {
+	public List<User> list() {
 		Session session = this.sessionFactory.openSession();
-		List<Store> storeList = session.createQuery("from Store").list();
+		List<User> userList = session.createQuery("from User").list();
 		session.close();
-		return storeList;
+		return userList;
 	}
 
 	@Override
-	public Store fetch(int storeId) {
+	public User fetch(int userId) {
 		Session session = this.sessionFactory.openSession();
-		Store store = (Store) session.load(Store.class, storeId);
+		User user = (User) session.load(User.class, userId);
 		session.close();
-		return store;
+		return user;
 	}
 
 	@Override
-	public void delete(long storeId) {
+	public User delete(long userId) {
 		Session session = this.sessionFactory.openSession();
-		Store store = (Store) session.load(Store.class, storeId);
-		session.delete(store);
+		User user = (User) session.load(User.class, userId);
+		session.delete(user);
 		session.close();
+		return user;
 	}
 }

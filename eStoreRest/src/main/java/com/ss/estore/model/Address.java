@@ -29,14 +29,18 @@ public class Address implements Serializable {
 
 	@Column(name = "nickName")
 	private String nickName;
-	
+
 	@Column(name = "addressType")
 	private String addressType;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "memberId", nullable = false, insertable=true)
+	@JoinColumn(name = "storeIdFK")
 	private Store store;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userIdFK")
+	private User user;
+
 	public int getPinCode() {
 		return pinCode;
 	}
@@ -124,6 +128,14 @@ public class Address implements Serializable {
 
 	public void setStore(Store store) {
 		this.store = store;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getBillingCode() {

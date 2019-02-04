@@ -13,7 +13,7 @@ import com.ss.estore.model.Store;
  */
 public interface StoreDAO {
 	public void save(Store p);
-
+	public void delete(long storeId);
 	public List<Store> list();
 
 	public Store fetch(int storeId);

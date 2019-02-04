@@ -42,4 +42,10 @@ public class StoreServiceImpl implements StoreService {
 		storeDAO.fetch(storeId);
 		return null;
 	}
+
+	@Override
+	public void delete(long storeId) {
+		storeDAO.delete(storeId);
+		
+	}
 }

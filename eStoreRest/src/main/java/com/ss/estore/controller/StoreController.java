@@ -26,17 +26,14 @@ import com.ss.estore.service.StoreService;
 @Controller
 public class StoreController {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(StoreController.class);
+	private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
 
-	// Map to store Stores, ideally we should use database
-	Map<Integer, Store> storeData = new HashMap<Integer, Store>();
 	@Autowired
 	StoreService service;
 
 	@RequestMapping(value = "/rest/store/test", method = RequestMethod.GET)
 	public @ResponseBody Store getTestStore() {
-		logger.info("Start getFirstStore");
+		logger.info("Start get test Store");
 		Address address1 = new Address();
 		address1.setAddressType("S");
 		address1.setAddrLine1("Street1");
@@ -48,8 +45,22 @@ public class StoreController {
 		address1.setPinCode(500001);
 		address1.setState("Telangana");
 		address1.setStatus("P");
+
+		Address address2 = new Address();
+		address2.setAddressType("B");
+		address2.setAddrLine1("Street1");
+		address2.setCity("Hyderabad");
+		address2.setCountry("India");
+		address2.setEmail1("test@test.com");
+		address2.setFirstName("fName");
+		address2.setLastName("lName");
+		address2.setPinCode(500001);
+		address2.setState("Telangana");
+		address2.setStatus("P");
+
 		List<Address> addrList = new ArrayList<Address>();
 		addrList.add(address1);
+		addrList.add(address2);
 		Store store = new Store();
 		store.setStoreName("Test Store");
 		store.setAddress(addrList);
@@ -66,12 +77,7 @@ public class StoreController {
 	@RequestMapping(value = "/rest/stores", method = RequestMethod.GET)
 	public @ResponseBody List<Store> getAllStores() {
 		logger.info("Start getAllStores.");
-		List<Store> emps = new ArrayList<Store>();
-		Set<Integer> empIdKeys = storeData.keySet();
-		for (Integer i : empIdKeys) {
-			emps.add(storeData.get(i));
-		}
-		return emps;
+		return service.listAll();
 	}
 
 	@RequestMapping(value = "/rest/store/create", method = RequestMethod.POST)
@@ -85,7 +91,6 @@ public class StoreController {
 	@RequestMapping(value = "/rest/store/delete/{id}", method = RequestMethod.PUT)
 	public @ResponseBody String deleteStore(@PathVariable("id") int storeId) {
 		logger.info("Start deleteStore.");
-		storeData.remove(storeId);
 		return "store deleted";
 	}
 

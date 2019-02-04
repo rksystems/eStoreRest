@@ -15,44 +15,44 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "store")
-public class Store implements Serializable {
+@Table(name = "users")
+public class User implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2296726630269967889L;
 
 	@Id
-	@Column(name = "storeId")
+	@Column(name = "userId")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int storeId;
+	private int userId;
 
-	@Column(name = "storeName")
-	private String storeName;
+	@Column(name = "userName")
+	private String userName;
 
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "store")
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "user")
 	private Collection<Address> address;
 
 	@Column(name = "createdDate")
 	private Date createdDate;
 
-	@Column(name = "storeLogoPath")
-	private String storeLogoPath;
+	@Column(name = "password")
+	private String password;
 
-	public int getStoreId() {
-		return storeId;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setStoreId(int storeId) {
-		this.storeId = storeId;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public String getStoreName() {
-		return storeName;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setStoreName(String storeName) {
-		this.storeName = storeName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public Collection<Address> getAddress() {
@@ -71,12 +71,12 @@ public class Store implements Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public String getStoreLogoPath() {
-		return storeLogoPath;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setStoreLogoPath(String storeLogoPath) {
-		this.storeLogoPath = storeLogoPath;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }
