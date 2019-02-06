@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author ragrayal
  *
@@ -23,7 +25,7 @@ public class ProductsCatalog {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "productID")
-	private int productID;
+	private long productID;
 
 	@Column(name = "productName", length = 45)
 	private String productName;
@@ -35,7 +37,7 @@ public class ProductsCatalog {
 	private String productLongDesc;
 
 	@Column(name = "price", scale=10, precision=2)
-	private String price;
+	private int price;
 
 	@Column(name = "discount", scale=10, precision=2)
 	private String discount;
@@ -58,11 +60,11 @@ public class ProductsCatalog {
 	@Column(name = "active", length = 1)
 	private String active;
 
-	public int getProductID() {
+	public long getProductID() {
 		return productID;
 	}
 
-	public void setProductID(int productID) {
+	public void setProductID(long productID) {
 		this.productID = productID;
 	}
 
@@ -90,11 +92,11 @@ public class ProductsCatalog {
 		this.productLongDesc = productLongDesc;
 	}
 
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 

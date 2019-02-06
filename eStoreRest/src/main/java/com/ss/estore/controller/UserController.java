@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +89,14 @@ public class UserController {
 		user.getAddress().forEach(address -> address.setUser(user));
 		service.add(user);
 		return "New user created";
+	}
+	
+	@RequestMapping(value = "/rest/user/login/{userId}", method = RequestMethod.GET)
+	public @ResponseBody String loginUser(HttpSession session, @PathVariable("userId") long userId) {
+		logger.info("Start createUser.");
+		User user = service.fetch((int)userId);
+		session.setAttribute("user", user);
+		return "User loging successful";
 	}
 
 	@RequestMapping(value = "/rest/user/delete/{id}", method = RequestMethod.PUT)

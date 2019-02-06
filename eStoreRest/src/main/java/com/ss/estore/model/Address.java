@@ -41,14 +41,6 @@ public class Address implements Serializable {
 	@JoinColumn(name = "userId")
 	private User user;
 
-	public int getPinCode() {
-		return pinCode;
-	}
-
-	public void setPinCode(int pinCode) {
-		this.pinCode = pinCode;
-	}
-
 	@Column(name = "billingCode")
 	private String billingCode;
 
@@ -226,6 +218,14 @@ public class Address implements Serializable {
 		this.country = country;
 	}
 
+	public int getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(int pinCode) {
+		this.pinCode = pinCode;
+	}
+	
 	public String getEmail1() {
 		return email1;
 	}

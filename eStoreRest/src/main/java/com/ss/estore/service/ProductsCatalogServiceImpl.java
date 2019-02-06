@@ -19,11 +19,13 @@ public class ProductsCatalogServiceImpl implements ProductsCatalogService {
 		this.productsCatalogDAO = productsCatalogDAO;
 	}
 
+	@Override
 	@Transactional
 	public void add(ProductsCatalog product) {
 		productsCatalogDAO.save(product);
 	}
 
+	@Override
 	@Transactional
 	public void addAll(Collection<ProductsCatalog> products) {
 		for (ProductsCatalog product : products) {
@@ -31,6 +33,7 @@ public class ProductsCatalogServiceImpl implements ProductsCatalogService {
 		}
 	}
 
+	@Override
 	@Transactional(readOnly = true)
 	public List<ProductsCatalog> listAll() {
 		return productsCatalogDAO.list();
@@ -38,11 +41,13 @@ public class ProductsCatalogServiceImpl implements ProductsCatalogService {
 	}
 
 	@Override
+	@Transactional
 	public ProductsCatalog fetch(long productId) {
 		return productsCatalogDAO.fetch(productId);
 	}
 
 	@Override
+	@Transactional
 	public ProductsCatalog deleteProduct(long productId) {
 		return productsCatalogDAO.delete(productId);
 	}

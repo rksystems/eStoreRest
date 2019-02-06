@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User fetch(int userId) {
+	public User fetch(long userId) {
 		return userDAO.fetch(userId);
 	}
 

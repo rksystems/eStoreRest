@@ -60,7 +60,7 @@ CREATE TABLE `estore`.`address` (
     ON UPDATE NO ACTION);
 
     
-    drop table productscatalog;
+drop table `estore`.`productscatalog`;
     CREATE TABLE `estore`.`productscatalog` (
   `productID` INT NOT NULL AUTO_INCREMENT,
   `productName` VARCHAR(45) NOT NULL,
@@ -77,6 +77,65 @@ CREATE TABLE `estore`.`address` (
   PRIMARY KEY (`productID`))
 COMMENT = 'This table stores the information about the Products sold by Business.';
     
+drop table `estore`.`orders`;
     
-    
+CREATE TABLE `estore`.`orders` (
+  `orderId` INT NOT NULL AUTO_INCREMENT,
+  `total` DECIMAL(20,5) NOT NULL,
+  `tax` DECIMAL(20,5) NOT NULL,
+  `shipping` DECIMAL(20,5) NOT NULL,
+  `description` VARCHAR(254) NULL COMMENT '\'A mnemonic description of the order, entered by the customer, suitable for display to the customer.\'',
+  `storeId` VARCHAR(45) NULL,
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'INR',
+  `status` VARCHAR(15) NULL COMMENT 'Order Placed, Cancelled, Shipped, Delivered, Completed',
+  `userId` INT NULL COMMENT 'The customer that placed the order.',
+  PRIMARY KEY (`orderId`),
+  INDEX `userIdFK_idx` (`userId` ASC) VISIBLE,
+  CONSTRAINT `orders_userId_FK`
+    FOREIGN KEY (`userId`)
+    REFERENCES `estore`.`users` (`userId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+COMMENT = 'Orders of the customer';
+
+drop table `estore`.`orderitems`;
+CREATE TABLE `estore`.`orderitems` (
+  `orderItemId` INT NOT NULL AUTO_INCREMENT,
+  `orderId` INT NULL COMMENT 'The order of which this order item is part',
+  `productCatalogId` INT NULL,
+  `orderItemName` VARCHAR(65) NOT NULL,
+  `userId` INT NULL,
+  `addressId` INT NULL COMMENT 'The shipping address, if any, for this order item',
+  `price` DECIMAL(20,5) NOT NULL,
+  `quantity` INT NOT NULL,
+  `totalPrice` DECIMAL(20,5) NOT NULL,
+  `tax` DECIMAL(20,5) NOT NULL,
+  `adjustments` DECIMAL(20,5) NOT NULL,
+  `shipping` DECIMAL(20,5) NOT NULL,
+  `status` VARCHAR(15) NULL,
+  PRIMARY KEY (`orderItemId`),
+  INDEX `orderItem_order_fk_idx` (`orderId` ASC) VISIBLE,
+  INDEX `orderItem_address_fk_idx` (`addressId` ASC) VISIBLE,
+  INDEX `orderItem_user_fk_idx` (`userId` ASC) VISIBLE,
+  INDEX `orderItem_productcatalog_fk_idx` (`productCatalogId` ASC) VISIBLE,
+  CONSTRAINT `orderItem_order_fk`
+    FOREIGN KEY (`orderId`)
+    REFERENCES `estore`.`orders` (`orderId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `orderItem_address_fk`
+    FOREIGN KEY (`addressId`)
+    REFERENCES `estore`.`address` (`addressId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `orderItem_user_fk`
+    FOREIGN KEY (`userId`)
+    REFERENCES `estore`.`users` (`userId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `orderItem_productcatalog_fk`
+    FOREIGN KEY (`productCatalogId`)
+    REFERENCES `estore`.`productscatalog` (`productID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 

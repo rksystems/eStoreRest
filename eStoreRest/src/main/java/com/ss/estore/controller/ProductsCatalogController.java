@@ -33,7 +33,7 @@ public class ProductsCatalogController {
 		product.setProductName("Fox Tail Millet");
 		product.setProductShortDesc("Millet");
 		product.setProductLongDesc("Millets are stable food in few centures ago. Rich in Fiber and Protein");
-		product.setPrice("80");
+		product.setPrice(80);
 		product.setQuantity("100");
 		product.setCategory("Millets");
 		product.setSubCategory("");
