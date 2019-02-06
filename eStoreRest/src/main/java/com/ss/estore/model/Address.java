@@ -23,7 +23,7 @@ public class Address implements Serializable {
 	 */
 	private static final long serialVersionUID = -8400298588798183132L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "addressId")
 	private int addressId;
 
@@ -34,11 +34,11 @@ public class Address implements Serializable {
 	private String addressType;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "storeIdFK")
+	@JoinColumn(name = "storeId")
 	private Store store;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userIdFK")
+	@JoinColumn(name = "userId")
 	private User user;
 
 	public int getPinCode() {

@@ -54,7 +54,7 @@ public class StoreDAOImpl implements StoreDAO {
 	}
 
 	@Override
-	public Store fetch(int storeId) {
+	public Store fetch(long storeId) {
 		Session session = this.sessionFactory.openSession();
 		Store store = (Store) session.load(Store.class, storeId);
 		session.close();

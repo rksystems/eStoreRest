@@ -16,5 +16,5 @@ public interface UserDAO {
 
 	public List<User> list();
 	public User delete(long userId);
-	public User fetch(int storeId);
+	public User fetch(long userId);
 }

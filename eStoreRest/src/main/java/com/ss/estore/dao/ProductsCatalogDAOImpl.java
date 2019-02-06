@@ -13,14 +13,14 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ss.estore.model.User;
+import com.ss.estore.model.ProductsCatalog;
 
 /**
  * @author Raghu Kishore
  *
  */
 @Component
-public class UserDAOImpl implements UserDAO {
+public class ProductsCatalogDAOImpl implements ProductsCatalogDAO {
 	private SessionFactory sessionFactory;
 
 	/*public void setSessionFactory(SessionFactory sessionFactory) {
@@ -36,37 +36,37 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void save(User user) {
+	public void save(ProductsCatalog product) {
 		Session session = this.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(user);
+		session.save(product);
 		tx.commit();
 		session.close();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> list() {
+	public List<ProductsCatalog> list() {
 		Session session = this.sessionFactory.openSession();
-		List<User> userList = session.createQuery("from User").list();
+		List<ProductsCatalog> products = session.createQuery("from ProductsCatalog").list();
 		session.close();
-		return userList;
+		return products;
 	}
 
 	@Override
-	public User fetch(long userId) {
+	public ProductsCatalog fetch(long productID) {
 		Session session = this.sessionFactory.openSession();
-		User user = (User) session.load(User.class, userId);
+		ProductsCatalog product = (ProductsCatalog) session.load(ProductsCatalog.class, productID);
 		session.close();
-		return user;
+		return product;
 	}
 
 	@Override
-	public User delete(long userId) {
+	public ProductsCatalog delete(long productID) {
 		Session session = this.sessionFactory.openSession();
-		User user = (User) session.load(User.class, userId);
-		session.delete(user);
+		ProductsCatalog productsCatalog = (ProductsCatalog) session.load(ProductsCatalog.class, productID);
+		session.delete(productsCatalog);
 		session.close();
-		return user;
+		return productsCatalog;
 	}
 }

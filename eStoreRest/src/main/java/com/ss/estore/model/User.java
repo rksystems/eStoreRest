@@ -24,7 +24,7 @@ public class User implements Serializable {
 
 	@Id
 	@Column(name = "userId")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 
 	@Column(name = "userName")
@@ -33,11 +33,14 @@ public class User implements Serializable {
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "user")
 	private Collection<Address> address;
 
-	@Column(name = "createdDate")
-	private Date createdDate;
+	/*@Column(name = "createdDate")
+	private Date createdDate;*/
 
 	@Column(name = "password")
 	private String password;
+	
+	@Column(name = "active")
+	private String active;
 
 	public int getUserId() {
 		return userId;
@@ -63,13 +66,13 @@ public class User implements Serializable {
 		this.address = address;
 	}
 
-	public Date getCreatedDate() {
+	/*public Date getCreatedDate() {
 		return createdDate;
 	}
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
-	}
+	}*/
 
 	public String getPassword() {
 		return password;
@@ -77,6 +80,14 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
 	}
 
 }

@@ -1,10 +1,8 @@
 package com.ss.estore.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +62,9 @@ public class UserController {
 		User user = new User();
 		user.setUserName("UniqueUserName");
 		user.setPassword("*******");
+		user.setUserId(0);
+		user.setActive("Y");
+		//user.setCreatedDate(new Date(2019, 12, 12));
 		user.setAddress(addrList);
 		return user;
 	}
