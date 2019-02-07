@@ -88,73 +88,17 @@ public class OrdersController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/rest/orders/{productId}/{quantity}", method = RequestMethod.POST)
-	public @ResponseBody String createOrder(HttpSession session, @PathVariable("productId") int productId,
+	@RequestMapping(value = "/rest/addToCart/{productId}/{quantity}", method = RequestMethod.POST)
+	public @ResponseBody String addToCart(HttpSession session, @PathVariable("productId") int productId,
 			@PathVariable("quantity") int quantity) {
 		logger.info("Start createOrders.");
-		ProductsCatalog product = productService.fetch(productId);
-		User user = (User) session.getAttribute("user");
-		if (user != null && product != null) {
-			OrderItems orderItem1 = new OrderItems();
-			orderItem1.setProductCatalogId(product.getProductID());
-			orderItem1.setOrderItemName(product.getProductName());
-			List<Address> add = (List<Address>) user.getAddress();
-			if (add != null && add.size() > 0) {
-				orderItem1.setAddressId(add.get(0).getAddressId());
-			}
-			orderItem1.setPrice(product.getPrice());
-			orderItem1.setQuantity(quantity);
-			orderItem1.setAdjustments(10);
-			orderItem1.setTotalPrice(orderItem1.getPrice() * orderItem1.getQuantity());
-			orderItem1.setUserId(user.getUserId());
-
-			Orders order = getCurrentOrder(session);
-			List<OrderItems> orderItemsList = null;
-			if (order == null) {
-				order = new Orders();
-				orderItemsList = new ArrayList<OrderItems>();
-				orderItemsList.add(orderItem1);
-				order.setOrderItems(orderItemsList);
-			} else {
-				orderItemsList = (List<OrderItems>) order.getOrderItems();
-				if (orderItemsList == null) {
-					orderItemsList = new ArrayList<OrderItems>();
-					orderItemsList.add(orderItem1);
-					order.setOrderItems(orderItemsList);
-				} else {
-					if (orderItemsList.contains(orderItem1)) {
-						long pid = product.getProductID();
-						OrderItems item = orderItemsList.get(orderItemsList.indexOf(orderItem1));
-						if (pid == item.getProductCatalogId()) {
-							int newQuantity = item.getQuantity() + quantity;
-							item.setQuantity(newQuantity);
-							item.setTotalPrice(item.getPrice() * item.getQuantity());
-						}
-					} else
-						orderItemsList.add(orderItem1);
-				}
-			}
-			double total = 0.0;
-			for (OrderItems i : orderItemsList) {
-				total = +i.getTotalPrice();
-			}
-			order.setTotal(total);
-			order.setTax(1);
-			order.setShipping(1);
-			order.setCurrency("INR");
-			order.setUserId(user.getUserId());
-			Orders orderFinal = order;
-			order.getOrderItems().forEach(orderItems -> orderItems.setOrder(orderFinal));
-			orderService.add(order);
-			return "Order created";
-		} else
-			return "User Not Found";
+		return orderService.addToCart(session, productId, quantity);
 	}
 
 	@RequestMapping(value = "/rest/orders/delete/{id}", method = RequestMethod.PUT)
 	public @ResponseBody String deleteOrder(@PathVariable("id") int orderId) {
 		logger.info("Start deleteOrders.");
-		return "Orders deleted";
+		return "Order not deleted";
 	}
 
 }
