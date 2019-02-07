@@ -68,9 +68,23 @@ public class OrdersController {
 	}
 
 	@RequestMapping(value = "/rest/orders", method = RequestMethod.GET)
-	public @ResponseBody List<Orders> getAllOrderss() {
+	public @ResponseBody List<Orders> getAllOrders(HttpSession session) {
 		logger.info("Start getAllOrderss.");
-		return orderService.listAll();
+		User user = (User)session.getAttribute("user");
+		if (user != null) {
+			return orderService.listAll(user.getUserId());
+		} else
+		return null;
+	}
+	
+	@RequestMapping(value = "/rest/currentOrder", method = RequestMethod.GET)
+	public @ResponseBody Orders getCurrentOrder(HttpSession session) {
+		logger.info("Start getCurrentOrder.");
+		User user = (User)session.getAttribute("user");
+		if (user != null) {
+			return orderService.currentOrder(user.getUserId());
+		} else
+		return null;
 	}
 
 	@Transactional

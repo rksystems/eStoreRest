@@ -1,6 +1,5 @@
 package com.ss.estore.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +23,9 @@ public class OrdersServiceImpl implements OrdersService {
 		ordersDAO.save(order);
 	}
 
-	@Transactional
-	public void addAll(Collection<Orders> orders) {
-		for (Orders order : orders) {
-			ordersDAO.save(order);
-		}
-	}
-
 	@Transactional(readOnly = true)
-	public List<Orders> listAll() {
-		return ordersDAO.list();
+	public List<Orders> listAll(long userId) {
+		return ordersDAO.list(userId);
 
 	}
 
@@ -47,5 +39,10 @@ public class OrdersServiceImpl implements OrdersService {
 	public void delete(long storeId) {
 		ordersDAO.delete(storeId);
 
+	}
+
+	@Override
+	public Orders currentOrder(long userId) {
+		return ordersDAO.currentOrder(userId);
 	}
 }

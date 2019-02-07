@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,9 +47,9 @@ public class OrdersDAOImpl implements OrdersDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Orders> list() {
+	public List<Orders> list(long userId) {
 		Session session = this.sessionFactory.openSession();
-		List<Orders> orders = session.createQuery("from Orders").list();
+		List<Orders> orders = session.createQuery("from Orders where Orders.userId="+userId).list();
 		session.close();
 		return orders;
 	}
@@ -67,5 +68,17 @@ public class OrdersDAOImpl implements OrdersDAO {
 		Orders order = (Orders) session.load(Orders.class, orderId);
 		session.delete(order);
 		session.close();
+	}
+
+	@Override
+	public Orders currentOrder(long userId) {
+		Session session = this.sessionFactory.openSession();
+		Query<Orders> query = session.createQuery("from Orders where Orders.status is null and Orders.userId="+userId);
+		Orders order = null;
+		if(query.list().size()>0) {
+			order = query.list().get(0);
+		}
+		session.close();
+		return order;
 	}
 }

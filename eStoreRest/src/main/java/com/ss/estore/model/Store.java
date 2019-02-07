@@ -1,6 +1,5 @@
 package com.ss.estore.model;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.Collection;
 
@@ -16,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "store")
-public class Store implements Serializable {
+public class Store {
 	/**
 	 * 
 	 */

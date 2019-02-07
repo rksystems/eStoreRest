@@ -14,6 +14,7 @@ import com.ss.estore.model.Orders;
 public interface OrdersDAO {
 	public void save(Orders order);
 	public void delete(long orderId);
-	public List<Orders> list();
+	public List<Orders> list(long userId);
 	public Orders fetch(long orderId);
+	public Orders currentOrder(long userId);
 }

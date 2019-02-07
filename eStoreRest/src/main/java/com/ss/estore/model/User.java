@@ -1,7 +1,5 @@
 package com.ss.estore.model;
 
-import java.io.Serializable;
-import java.sql.Date;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -16,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User {
 	/**
 	 * 
 	 */
