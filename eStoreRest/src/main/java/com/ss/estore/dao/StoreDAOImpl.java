@@ -39,7 +39,7 @@ public class StoreDAOImpl implements StoreDAO {
 	public void save(Store store) {
 		Session session = this.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(store);
+		session.saveOrUpdate(store);
 		tx.commit();
 		session.close();
 	}

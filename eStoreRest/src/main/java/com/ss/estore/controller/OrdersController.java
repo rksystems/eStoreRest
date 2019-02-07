@@ -70,21 +70,21 @@ public class OrdersController {
 	@RequestMapping(value = "/rest/orders", method = RequestMethod.GET)
 	public @ResponseBody List<Orders> getAllOrders(HttpSession session) {
 		logger.info("Start getAllOrderss.");
-		User user = (User)session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		if (user != null) {
 			return orderService.listAll(user.getUserId());
 		} else
-		return null;
+			return null;
 	}
-	
+
 	@RequestMapping(value = "/rest/currentOrder", method = RequestMethod.GET)
 	public @ResponseBody Orders getCurrentOrder(HttpSession session) {
 		logger.info("Start getCurrentOrder.");
-		User user = (User)session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		if (user != null) {
 			return orderService.currentOrder(user.getUserId());
 		} else
-		return null;
+			return null;
 	}
 
 	@Transactional
@@ -93,25 +93,47 @@ public class OrdersController {
 			@PathVariable("quantity") int quantity) {
 		logger.info("Start createOrders.");
 		ProductsCatalog product = productService.fetch(productId);
-		User user = (User)session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		if (user != null && product != null) {
 			OrderItems orderItem1 = new OrderItems();
 			orderItem1.setProductCatalogId(product.getProductID());
-			orderItem1.setUserId(1);
 			orderItem1.setOrderItemName(product.getProductName());
 			List<Address> add = (List<Address>) user.getAddress();
-			orderItem1.setAddressId(add.get(0).getAddressId());
+			if (add != null && add.size() > 0) {
+				orderItem1.setAddressId(add.get(0).getAddressId());
+			}
 			orderItem1.setPrice(product.getPrice());
 			orderItem1.setQuantity(quantity);
 			orderItem1.setAdjustments(10);
 			orderItem1.setTotalPrice(orderItem1.getPrice() * orderItem1.getQuantity());
 			orderItem1.setUserId(user.getUserId());
-			List<OrderItems> orderItemsList = new ArrayList<OrderItems>();
-			orderItemsList.add(orderItem1);
-			Orders order = new Orders();
-			order.setDescription("Test Store");
-			order.setOrderItems(orderItemsList);
-			order.setCurrency("INR");
+
+			Orders order = getCurrentOrder(session);
+			List<OrderItems> orderItemsList = null;
+			if (order == null) {
+				order = new Orders();
+				orderItemsList = new ArrayList<OrderItems>();
+				orderItemsList.add(orderItem1);
+				order.setOrderItems(orderItemsList);
+			} else {
+				orderItemsList = (List<OrderItems>) order.getOrderItems();
+				if (orderItemsList == null) {
+					orderItemsList = new ArrayList<OrderItems>();
+					orderItemsList.add(orderItem1);
+					order.setOrderItems(orderItemsList);
+				} else {
+					if (orderItemsList.contains(orderItem1)) {
+						long pid = product.getProductID();
+						OrderItems item = orderItemsList.get(orderItemsList.indexOf(orderItem1));
+						if (pid == item.getProductCatalogId()) {
+							int newQuantity = item.getQuantity() + quantity;
+							item.setQuantity(newQuantity);
+							item.setTotalPrice(item.getPrice() * item.getQuantity());
+						}
+					} else
+						orderItemsList.add(orderItem1);
+				}
+			}
 			double total = 0.0;
 			for (OrderItems i : orderItemsList) {
 				total = +i.getTotalPrice();
@@ -119,9 +141,10 @@ public class OrdersController {
 			order.setTotal(total);
 			order.setTax(1);
 			order.setShipping(1);
+			order.setCurrency("INR");
 			order.setUserId(user.getUserId());
-			order.getOrderItems().forEach(orderItems -> orderItems.setOrder(order));
-			// order.getOrderItems().forEach(orderItems->orderItems.setAddress(order.ge));
+			Orders orderFinal = order;
+			order.getOrderItems().forEach(orderItems -> orderItems.setOrder(orderFinal));
 			orderService.add(order);
 			return "Order created";
 		} else

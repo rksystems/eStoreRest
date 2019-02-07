@@ -40,7 +40,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public void save(Orders order) {
 		Session session = this.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(order);
+		session.saveOrUpdate(order);
 		tx.commit();
 		session.close();
 	}
@@ -73,10 +73,10 @@ public class OrdersDAOImpl implements OrdersDAO {
 	@Override
 	public Orders currentOrder(long userId) {
 		Session session = this.sessionFactory.openSession();
-		Query<Orders> query = session.createQuery("from Orders where Orders.status is null and Orders.userId="+userId);
+		Query query = session.createQuery("from Orders ord where ord.status is null and ord.userId="+userId);
 		Orders order = null;
 		if(query.list().size()>0) {
-			order = query.list().get(0);
+			order = (Orders)query.list().get(0);
 		}
 		session.close();
 		return order;

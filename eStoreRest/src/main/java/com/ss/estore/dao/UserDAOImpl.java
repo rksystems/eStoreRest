@@ -39,7 +39,7 @@ public class UserDAOImpl implements UserDAO {
 	public void save(User user) {
 		Session session = this.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(user);
+		session.saveOrUpdate(user);
 		tx.commit();
 		session.close();
 	}

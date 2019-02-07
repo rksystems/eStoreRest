@@ -39,7 +39,7 @@ public class ProductsCatalogDAOImpl implements ProductsCatalogDAO {
 	public void save(ProductsCatalog product) {
 		Session session = this.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.save(product);
+		session.saveOrUpdate(product);
 		tx.commit();
 		session.close();
 	}
